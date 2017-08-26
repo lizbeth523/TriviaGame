@@ -1,10 +1,16 @@
 // Start button click handler
 $(document).ready ( function() {
-	var countdown;
-
+	var answerIndex;
+	var index;
 	//  Variable that will hold our setInterval that runs the stopwatch
 	var intervalId;
-
+	// Array of integer values for whether answer was correct, incorrect, or unanswered
+	// 0 for unanswered, 1 for correct, 2 for incorrect
+	var isCorrect = [];
+	var numCorrect = 0;
+	var numIncorrect = 0;
+	var numUnanswered = 0;
+	var questionIndex;
 	var questions = [
 		{
 			question: "Question 1",
@@ -12,7 +18,7 @@ $(document).ready ( function() {
 					  "answer2",
 					   "answer3",
 					   "answer4"],
-			correctAnswer: "answer1"
+			correctIndex: 0
 		},
 		{
 			question: "Question 2",
@@ -20,7 +26,7 @@ $(document).ready ( function() {
 					  "answer2",
 					  "answer3",
 					  "answer4"],
-			correctAnswer: "answer2"
+			correctIndex: 1
 		},
 		{
 			question: "Question 3",
@@ -28,7 +34,7 @@ $(document).ready ( function() {
 					  "answer2",
 					  "answer3",
 					  "answer4"],
-			correctAnswer: "answer3"
+			correctIndex: 2
 		},
 		{
 			question: "Question 4",
@@ -36,10 +42,9 @@ $(document).ready ( function() {
 					  "answer2",
 					  "answer3",
 					  "answer4"],
-			correctAnswer: "answer4"
+			correctIndex: 3
 		}
 	];
-
 	var timeRemaining = 30;
 
 	// Start button click handler. Starts the game.
@@ -48,24 +53,82 @@ $(document).ready ( function() {
 		setGame();
 	});
 
+	// Checks whether a given answer is correct or incorrect and stores true or false in isCorrect array
+	var checkAnswer = function() {
+		if (answerIndex === questions[questionIndex].correctIndex)
+		{
+			isCorrect[questionIndex] = 1;
+		}
+		else
+		{
+			isCorrect[questionIndex] = 2;
+		}
+	};
+
 	// Update display and decrement timeRemaining as the countdown progresses
-	countdown = function() {
+	var countdown = function() {
 		$("#time-remaining").text(timeRemaining);
 		timeRemaining--;
-	}
+		if (timeRemaining <= 0)
+		{
+			getResults();
+			displayResults();
+			clearInterval(intervalId);
+		}
+	};
+
+	var displayResults = function() {
+		$(".game-div").html("<h2>All done!</h2>");
+		$(".game-div").append("<h3>Correct Answers: " + numCorrect + "</h3>");
+		$(".game-div").append("<h3>Incorrect Answers: " + numIncorrect + "</h3>");
+		$(".game-div").append("<h3>Unanswered: " + numUnanswered + "</h3>");
+	};
+
+	var getResults = function() {
+		for (var i = 0; i < questions.length; i++)
+		{
+			if (isCorrect[i] === 1)
+			{
+				numCorrect++;
+			}
+			else if (isCorrect[i] === 2)
+			{
+				numIncorrect++;
+			}
+			else
+			{
+				numUnanswered++;
+			}
+		}
+		console.log("correct: " + numCorrect + ", incorrect: " + numIncorrect + ", unanswered: " + numUnanswered);
+	};
 
 	// Set up the game
 	function setGame() 
 	{
 		intervalId = setInterval(countdown, 1000);
+		// Append questions and answers to page
 		for (var i = 0; i < questions.length; i++)
 		{
 			$(".game-div").append("<h2>" + questions[i].question + "</h2>");
 			for (var answer = 0; answer < questions[i].answers.length; answer++)
 			{
-				$(".game-div").append("<div class='answer-option' index=" + i + ">" + questions[i].answers[answer] + "</div>");
-			}
-		}
-	}
-});
+				$(".game-div").append("<div class='answer-option' questionIndex=" + i + " answerIndex= " + answer + ">" + questions[i].answers[answer] + "</div>");
+			} 
+		} 
+		// Trivia answer click handler
+		$(".answer-option").on("click", function() {
+			questionIndex = parseInt($(this).attr("questionIndex"));
+			answerIndex = parseInt($(this).attr("answerIndex"));
+			checkAnswer();
+		}); 
+		// Append submit button to page
+		$(".game-div").append("<button id='btn-submit'>Submit</button>");
+		// Submit button click handler
+		$("#btn-submit").on("click", function() {
+			getResults();
+			displayResults();
+		});
+	} 
+}); 
 
