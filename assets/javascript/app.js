@@ -82,6 +82,8 @@ $(document).ready ( function() {
 		$(".game-div").append("<h3>Correct Answers: " + numCorrect + "</h3>");
 		$(".game-div").append("<h3>Incorrect Answers: " + numIncorrect + "</h3>");
 		$(".game-div").append("<h3>Unanswered: " + numUnanswered + "</h3>");
+		$(".game-div").append("<button class='btn-start'>Start Over?</button>")
+		$(".btn-start").click(reset);
 	};
 
 	var getResults = function() {
@@ -101,6 +103,17 @@ $(document).ready ( function() {
 			}
 		}
 		console.log("correct: " + numCorrect + ", incorrect: " + numIncorrect + ", unanswered: " + numUnanswered);
+	};
+
+	// Reset for new game
+	var reset = function() {
+		isCorrect = [];
+		numCorrect = 0;
+		numIncorrect = 0;
+		numUnanswered = 0;
+		$(".game-div").empty();
+		clearInterval(intervalId);
+		setGame();
 	};
 
 	// Set up the game
