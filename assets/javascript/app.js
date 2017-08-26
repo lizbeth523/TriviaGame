@@ -111,7 +111,9 @@ $(document).ready ( function() {
 		numCorrect = 0;
 		numIncorrect = 0;
 		numUnanswered = 0;
-		$(".game-div").empty();
+		timeRemaining = 30;
+		$(".game-div").html("<h3>Time remaining: <span id='time-remaining'></span></h3>");
+		$("#time-remaining").text(timeRemaining);
 		clearInterval(intervalId);
 		setGame();
 	};
