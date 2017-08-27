@@ -1,4 +1,3 @@
-// Start button click handler
 $(document).ready ( function() {
 	var answerIndex;
 	var index;
