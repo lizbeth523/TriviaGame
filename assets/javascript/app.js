@@ -45,7 +45,7 @@ $(document).ready ( function() {
 			correctIndex: 3
 		}
 	];
-	var timeRemaining ;
+	var timeRemaining;
 
 	// Start button click handler. Starts the game.
 	$(".btn-start").on("click", function () {
@@ -71,21 +71,20 @@ $(document).ready ( function() {
 		timeRemaining--;
 		if (timeRemaining <= 0)
 		{
+			clearInterval(intervalId);
 			if (questionIndex < questions.length - 1)
 			{
-				clearInterval(intervalId);
 				setGame();
 			}
 			else
 			{
 				getResults();
-				displayResults();
-				clearInterval(intervalId);
+				displayGameResults();
 			}
 		}
 	};
 
-	var displayResults = function() {
+	var displayGameResults = function() {
 		$(".game-div").html("<h2>All done!</h2>");
 		$(".game-div").append("<h3>Correct Answers: " + numCorrect + "</h3>");
 		$(".game-div").append("<h3>Incorrect Answers: " + numIncorrect + "</h3>");
@@ -146,17 +145,18 @@ $(document).ready ( function() {
 		$(".answer-option").on("click", function() {
 			// questionIndex = parseInt($(this).attr("questionIndex"));
 			answerIndex = parseInt($(this).attr("answerIndex"));
+			clearInterval(intervalId);
 			checkAnswer();
 			if (questionIndex < questions.length - 1)
 			{
-				clearInterval(intervalId);
+				
 				setGame();
 			}
 			else
 			{
 				getResults();
-				displayResults();
-				clearInterval(intervalId);
+				displayGameResults();
+				
 			}
 		}); 
 		// // Append submit button to page
@@ -168,4 +168,3 @@ $(document).ready ( function() {
 		// });
 	} 
 }); 
-
