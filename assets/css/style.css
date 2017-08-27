@@ -1,6 +1,5 @@
 body {
 	background-image: url("../images/background.jpg");
-	/*background-repeat: no-repeat;*/
     background-size: cover;
 }
 
@@ -49,7 +48,6 @@ header {
 
 .container {
 	background-color: rgb(0, 121, 150);
-	height: 100vh;
 	margin: auto;
 	text-align: center;
 	width: 960px;
@@ -74,6 +72,9 @@ header {
 	background-color: rgb(200, 178, 234);
 }*/
 
+.game-div {
+	height: 80vh;
+}
 
 
 
