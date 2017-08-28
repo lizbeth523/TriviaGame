@@ -1,6 +1,7 @@
 $(document).ready ( function() {
+	// Index of the answer selected by the user
 	var answerIndex;
-	var correctAnswer;
+	// Index of the correct answer
 	var correctIndex;
 	//  Variable that will hold our setInterval that runs the stopwatch
 	var intervalId;
@@ -9,6 +10,7 @@ $(document).ready ( function() {
 	var numCorrect = 0;
 	var numIncorrect = 0;
 	var numUnanswered = 0;
+	// The current question
 	var question;
 	// questionIndex initialized to -1 because it is incremented before use in the setGame function
 	var questionIndex = -1;
@@ -21,7 +23,7 @@ $(document).ready ( function() {
 					   "Kauai"],
 			correctIndex: 2,
 			comment: "Part of Hawaiian culture, ʻohana means family. The concept emphasizes that families are bound together and members must cooperate and remember one another.",
-			mediaSrc: "assets/images/ohana.mp4"
+			videoSrc: "assets/images/ohana.mp4"
 		},
 		{
 			question: "How are hurricanes named?",
@@ -30,7 +32,8 @@ $(document).ready ( function() {
 					  "Hurricane forecasters draw names from a hat",
 					  "Friends or realitives of hurricane forecasters"],
 			correctIndex: 0,
-			comment: "NOAA's National Hurricane Center does not control the naming of tropical storms. Instead, there is a strict procedure established by the World Meteorological Organization. For Atlantic hurricanes, there is a list of male and female names which are used on a six-year rotation."
+			comment: "NOAA's National Hurricane Center does not control the naming of tropical storms. Instead, there is a strict procedure established by the World Meteorological Organization. For Atlantic hurricanes, there is a list of male and female names which are used on a six-year rotation.",
+			videoSrc: "assets/images/HurricaneHarvey.mp4"
 		},
 		{
 			question: "Which island has a sightseeing train that once transported sugar?",
@@ -40,7 +43,7 @@ $(document).ready ( function() {
 					  "Martinique"],
 			correctIndex: 2,
 			comment: "The St. Kitts Scenic Railway transported sugar cane from plantations to the capital city of Basseterre. Today, vintage narrow-gauge trains offer a delightful tour along coastlines, lush fields, and the ruins of the old plantations (some of which are now lovely inns, like Ottley’s Plantation).",
-			mediaSrc: "assets/images/StKittsRailway.mp4"
+			videoSrc: "assets/images/StKittsRailway.mp4"
 		},
 		{
 			question: "Where was the famous “Painkiller” cocktail created?",
@@ -50,7 +53,7 @@ $(document).ready ( function() {
 					  "Jost Van Dyke"],
 			correctIndex: 3,
 			comment: "This potent mix of Pusser’s rum, pineapple juice, cream of coconut, and orange juice, topped with grated fresh nutmeg was invented at the Soggy Dollar Bar on the crescent-shaped White Bay Beach of Jost Van Dyke in the 1970’s. Wade in or swim up from a boat, hand over some soggy bills, then sip away in a hammock or in the open-air beachfront bar.",
-			mediaSrc: "assets/images/tropical-drink.mp4"
+			videoSrc: "assets/images/tropical-drink.mp4"
 		},
 		{
 			question: "The French never ruled which of the following islands?",
@@ -59,7 +62,8 @@ $(document).ready ( function() {
 					   "St. Lucia",
 					   "St. Croix"],
 			correctIndex: 3,
-			comment: "St. Croix is one of three U.S. Virgin Islands (the others are St. Thomas and St. John) colonized by the Danish in the 17th century, but purchased by the U.S. in 1917 under President Theodore Roosevelt. French place names still linger on St. Lucia, Dominica and Grenada, even though all later became British colonies."
+			comment: "St. Croix is one of three U.S. Virgin Islands (the others are St. Thomas and St. John) colonized by the Danish in the 17th century, but purchased by the U.S. in 1917 under President Theodore Roosevelt. French place names still linger on St. Lucia, Dominica and Grenada, even though all later became British colonies.",
+			videoSrc: "assets/images/StCroixFlags.mp4"
 		},
 		{
 			question: "What country’s coastal waters are protected as a national park?",
@@ -68,14 +72,16 @@ $(document).ready ( function() {
 					  "Cayman Islands",
 					  "Tortola"],
 			correctIndex: 1,
-			comment: "The coastal waters of Bonaire were declared the Bonaire Marine Park in 1979. It’s a superb diving destination for spotting colorful fish, coral, and rays."
+			comment: "The coastal waters of Bonaire were declared the Bonaire Marine Park in 1979. It’s a superb diving destination for spotting colorful fish, coral, and rays.",
+			videoSrc: "assets/images/WashingtonSlagbaaiNationalParkBonaire.mp4"
 		},
 		{
 			question: "Tropical rainforests are home to half the plant and animal species on Earth. True or False?",
 			answers: ["True",
 					  "False"],
 			correctIndex: 0,
-			comment: "Although they cover less than 2 percent of Earth's surface, rainforests house an estimated 50 percent of all life on the planet's land masses."
+			comment: "Although they cover less than 2 percent of Earth's surface, rainforests house an estimated 50 percent of all life on the planet's land masses.",
+			videoSrc: "assets/images/RainforestAnimals.mp4"
 		},
 		{
 			question: "Trees in the tropical rainforest are so dense that it takes approximately ___ minutes for rainfall to reach the ground.",
@@ -84,7 +90,8 @@ $(document).ready ( function() {
 					  "30",
 					  "60"],
 			correctIndex: 1,
-			comment: "Much of the rain is stopped by the thick foliage in the canopy layer. Most trees in the forest grow to this height. There are plants that grow in the canopy layer. Their roots don't reach the ground. These are called air plants."
+			comment: "Much of the rain is stopped by the thick foliage in the canopy layer. Most trees in the forest grow to this height. There are plants that grow in the canopy layer. Their roots don't reach the ground. These are called air plants.",
+			videoSrc: "assets/images/rain.mp4"
 		}
 	];
 	var secondsPerQuestion = 5;
@@ -119,11 +126,6 @@ $(document).ready ( function() {
 		{
 			// Stop the countdown when time gets to zero
 			clearInterval(intervalId);
-			console.log("isCorrect[questionIndex] = " + isCorrect[questionIndex]);
-			// if (!(isCorrect[questionIndex] === 1 || isCorrect[questionIndex] === 2))
-			// {
-			// 	displayQuestionResults();
-			// }
 			if (questionIndex < questions.length - 1)
 			{
 				setGame();
@@ -150,7 +152,7 @@ $(document).ready ( function() {
 		intervalId = setInterval(countdown, 1000);
 		correctIndex = questions[questionIndex].correctIndex;
 		$(".game-div").html("<h2><span id='result'></span> <span id='msg'></span></h2>");
-		$(".game-div").append("<video width='640' height='480' autoplay><source src=" + questions[questionIndex].mediaSrc + " type='video/mp4'></source></video>");
+		$(".game-div").append("<video width='640' height='480' autoplay><source src=" + questions[questionIndex].videoSrc + " type='video/mp4'></source></video>");
 		if (answerIndex === correctIndex)
 		{
 			$("#result").html("Correct!");
