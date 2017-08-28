@@ -32,7 +32,7 @@ header {
 	height: 20vh;
 }
 
-.answer-option {
+.answer-option, #msg {
 	border-color: rgb(67, 50, 103);
 	color: rgb(67, 50, 103);
 	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
