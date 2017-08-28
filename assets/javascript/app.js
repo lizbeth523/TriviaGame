@@ -95,7 +95,7 @@ $(document).ready ( function() {
 		}
 	];
 	var secondsPerQuestion = 5;
-	var secondsPerResultDisp = 5;
+	var secondsPerResultDisp = 3;
 	var timeRemaining;
 
 	// Start button click handler. Starts the game.
@@ -115,6 +115,12 @@ $(document).ready ( function() {
 		{
 			isCorrect[questionIndex] = 2;
 		}
+	};
+
+	var answerClickHandler = function() {
+		clearInterval(intervalId);
+		checkAnswer();
+		displayQuestionResults(); 
 	};
 
 	// Update display and decrement timeRemaining as the countdown progresses
@@ -218,9 +224,10 @@ $(document).ready ( function() {
 		$(".answer-option").on("click", function() {
 			// questionIndex = parseInt($(this).attr("questionIndex"));
 			answerIndex = parseInt($(this).attr("answerIndex"));
-			clearInterval(intervalId);
-			checkAnswer();
-			displayQuestionResults(); 
+			// clearInterval(intervalId);
+			// checkAnswer();
+			// displayQuestionResults(); 
+			answerClickHandler();
 			// if (questionIndex < questions.length - 1)
 			// {
 			// 	setGame();
@@ -232,4 +239,4 @@ $(document).ready ( function() {
 			// }
 		}); 
 	} 
-}); 
+});
