@@ -49,7 +49,8 @@ $(document).ready ( function() {
 					  "Tortola",
 					  "Jost Van Dyke"],
 			correctIndex: 3,
-			comment: "This potent mix of Pusser’s rum, pineapple juice, cream of coconut, and orange juice, topped with grated fresh nutmeg was invented at the Soggy Dollar Bar on the crescent-shaped White Bay Beach of Jost Van Dyke in the 1970’s. Wade in or swim up from a boat, hand over some soggy bills, then sip away in a hammock or in the open-air beachfront bar."
+			comment: "This potent mix of Pusser’s rum, pineapple juice, cream of coconut, and orange juice, topped with grated fresh nutmeg was invented at the Soggy Dollar Bar on the crescent-shaped White Bay Beach of Jost Van Dyke in the 1970’s. Wade in or swim up from a boat, hand over some soggy bills, then sip away in a hammock or in the open-air beachfront bar.",
+			mediaSrc: "assets/images/tropical-drink.mp4"
 		},
 		{
 			question: "The French never ruled which of the following islands?",
