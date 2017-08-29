@@ -5,7 +5,7 @@ $(document).ready ( function() {
 	var correctIndex;
 	//  Variable that will hold our setInterval that runs the stopwatch
 	var intervalId;
-	// For each question, holds 0 for unanswered, 1 for correct, or 2 for incorrect in the index of the question
+	// For each question, holds 1 for correct, 2 for incorrect, or undefined for unanswered in the index of the question
 	var isCorrect = [];
 	var numCorrect = 0;
 	var numIncorrect = 0;
@@ -94,17 +94,19 @@ $(document).ready ( function() {
 			videoSrc: "assets/images/rain.mp4"
 		}
 	];
+	// Time limit in seconds to answer each question
 	var secondsPerQuestion = 5;
+	// Time in seconds that results for each question will be displayed
 	var secondsPerResultDisp = 3;
+	// Time in seconds remaining in the countdown
 	var timeRemaining;
 
 	// Start button click handler. Starts the game.
 	$(".btn-start").on("click", function () {
-		// $(".game-div").html("<h3>Time remaining: <span id='time-remaining'></span></h3>");
 		setGame();
 	});
 
-	// Checks whether a given answer is correct or incorrect. Sstores 1 if correct or 2 if incorrect in isCorrect array
+	// Checks whether a given answer is correct or incorrect. Stores 1 if correct or 2 if incorrect in isCorrect array at the index of the corresponding question
 	var checkAnswer = function() {
 		correctIndex = questions[questionIndex].correctIndex;
 		if (answerIndex === correctIndex)
@@ -115,8 +117,10 @@ $(document).ready ( function() {
 		{
 			isCorrect[questionIndex] = 2;
 		}
+		console.log("isCorrect: " + isCorrect);
 	};
 
+	// When answer is clicked, stop countdown, check whether answer is correct, and display results for that question
 	var answerClickHandler = function() {
 		clearInterval(intervalId);
 		checkAnswer();
@@ -144,6 +148,7 @@ $(document).ready ( function() {
 		}
 	};
 
+	// Display number of correct, incorrect, and unanswered questions at end of game. Option to restart game.
 	var displayGameResults = function() {
 		$(".game-div").html("<h2>All done!</h2>");
 		$(".game-div").append("<h3>Correct Answers: " + numCorrect + "</h3>");
@@ -153,6 +158,7 @@ $(document).ready ( function() {
 		$(".btn-start").click(reset);
 	};
 
+	// Display whether answer given for each question is correct or incorrect and video clip relating to topic of question
 	var displayQuestionResults = function() {
 		timeRemaining = secondsPerResultDisp;
 		intervalId = setInterval(countdown, 1000);
