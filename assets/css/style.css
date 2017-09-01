@@ -55,5 +55,25 @@ header {
 	width: 960px;
 }
 
+@media screen and (max-width: 980px) {
+	.container {
+		width: 85%;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	header {
+		height: auto;
+	}
+
+	video {
+		width: 90%;
+	}
+
+	.container {
+		width: 90%;
+	}
+}
+
 
 

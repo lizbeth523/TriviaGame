@@ -104,15 +104,24 @@ $(document).ready(function () {
 	// Time limit in seconds to answer each question
 	var secondsPerQuestion = 10;
 	// Time in seconds that results for each question will be displayed
-	var secondsPerResultDisp = 3;
+	var secondsPerResultDisp = 5;
 	// Time in seconds remaining in the countdown
 	var timeRemaining;
 
 	// Start button click handler. Starts the game.
-	$(".btn-start").on("click", function () {
-		// intervalId = setInterval(countdown, 1000); // gage only wantthis to run at the start
-		setGame();
+	$(".btn-start").on("click", setGame);
+
+	// Trivia answer click handler
+	$(document).on("click", ".answer-option", function () {
+		answerIndex = parseInt($(this).attr("answerIndex"));
+		answerClickHandler();
 	});
+
+	// When answer is clicked, check whether answer is correct and display results for that question
+	var answerClickHandler = function () {
+		checkAnswer();
+		displayQuestionResults();
+	};
 
 	// Checks whether a given answer is correct or incorrect. Stores 1 if correct or 2 if incorrect in isCorrect array at the index of the corresponding question
 	var checkAnswer = function () {
@@ -122,14 +131,6 @@ $(document).ready(function () {
 		} else {
 			isCorrect[questionIndex] = 2;
 		}
-		console.log("isCorrect: " + isCorrect);
-	};
-
-	// When answer is clicked, stop countdown, check whether answer is correct, and display results for that question
-	var answerClickHandler = function () {
-		// clearInterval(intervalId);
-		checkAnswer();
-		displayQuestionResults();
 	};
 
 	// Update display and decrement timeRemaining as the countdown progresses
@@ -139,16 +140,15 @@ $(document).ready(function () {
 		timeRemaining--;
 		if (timeRemaining <= 0) {
 			// Stop the countdown when time gets to zero
-			clearInterval(intervalId); //gage - your comment above is correct
+			clearInterval(intervalId); 
 			console.log("Interval Cleared");
+			displayQuestionResults();
 			if (questionIndex < questions.length - 1) {
-				displayQuestionResults();
 				setTimeout(setGame, secondsPerResultDisp * 1000);
 				
 			} else {
-				clearInterval(intervalId);
 				getResults();
-				displayGameResults();
+				setTimeout(displayGameResults, secondsPerResultDisp * 1000);
 			}
 		}
 	};
@@ -165,16 +165,23 @@ $(document).ready(function () {
 
 	// Display whether answer given for each question is correct or incorrect and video clip relating to topic of question
 	var displayQuestionResults = function () {
-		timeRemaining = secondsPerResultDisp; //gage - set to 10
-		// intervalId = setInterval(countdown, 1000);
+		timeRemaining = secondsPerResultDisp;
 		correctIndex = questions[questionIndex].correctIndex;
 		$(".game-div").html("<h2><span id='result'></span> <span id='msg'></span></h2>");
 		$(".game-div").append("<video width='640' height='480' autoplay><source src=" + questions[questionIndex].videoSrc + " type='video/mp4'></source></video>");
-		if (answerIndex === correctIndex) {
+		// If correct answer is chosen, say 'correct' and give comment with additional info on question topic
+		if (isCorrect[questionIndex] === 1) {
 			$("#result").html("Correct!");
 			$("#msg").html("<h2>" + questions[questionIndex].comment + "</h2>");
 		} else {
-			$("#result").html("Nope!");
+			// If an incorrect answer is chosen
+			if (isCorrect[questionIndex] === 2) {
+				$("#result").html("Nope!");
+			// If no answer is chosen before time runs out
+			} else {
+				$("#result").html("Time's up!");
+			}
+			// Display the correct answer
 			$("#msg").html("<h2>The correct answer is " + questions[questionIndex].answers[correctIndex] + "</h2>");
 		}
 	};
@@ -190,7 +197,6 @@ $(document).ready(function () {
 				numUnanswered++;
 			}
 		}
-		console.log("correct: " + numCorrect + ", incorrect: " + numIncorrect + ", unanswered: " + numUnanswered);
 	};
 
 	// Reset for new game
@@ -201,8 +207,6 @@ $(document).ready(function () {
 		numUnanswered = 0;
 		questionIndex = -1;
 		timeRemaining = secondsPerQuestion;
-		$(".game-div").html("<h3>Time remaining: <span id='time-remaining'></span></h3>");
-		$("#time-remaining").text(timeRemaining);
 		clearInterval(intervalId);
 		setGame();
 	};
@@ -219,24 +223,5 @@ $(document).ready(function () {
 		for (var answer = 0; answer < question.answers.length; answer++) {
 			$(".game-div").append("<div class='answer-option' questionIndex=" + questionIndex + " answerIndex= " + answer + ">" + question.answers[answer] + "</div>");
 		}
-
-		// Trivia answer click handler
-		$(".answer-option").on("click", function () {
-			// questionIndex = parseInt($(this).attr("questionIndex"));
-			answerIndex = parseInt($(this).attr("answerIndex"));
-			// clearInterval(intervalId);
-			// checkAnswer();
-			// displayQuestionResults(); 
-			answerClickHandler();
-			// if (questionIndex < questions.length - 1)
-			// {
-			// 	setGame();
-			// }
-			// else
-			// {
-			// 	getResults();
-			// 	displayGameResults();
-			// }
-		});
 	}
 });
