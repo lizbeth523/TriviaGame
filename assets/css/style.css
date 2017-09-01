@@ -30,6 +30,7 @@ h1 {
 header {
 	color: rgb(229, 243, 207);
 	height: 20vh;
+	padding-top: 5vh;
 }
 
 .answer-option, #msg {
